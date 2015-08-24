@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
     s.summary     = 'Cleware library'
     s.description = 'Library for Cleware USB devices (currently traffic light only)'
     s.authors     = ['Stefan Schönberger']
-    s.email       = ['mail@siner.net']
+    s.email       = ['mail@sniner.net']
     s.homepage    = 'https://github.com/sniner'
     s.license     = 'LGPL-3.0'
     s.files       = Dir.glob('lib/**/*.rb') + Dir.glob('test/*')
