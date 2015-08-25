@@ -17,8 +17,6 @@ begin
         end
     end
 rescue Interrupt
-ensure
-    io.close
 end if io
 
 include Sniner::Cleware::Devices::TrafficLight::Colors
@@ -26,21 +24,21 @@ include Sniner::Cleware::Devices::TrafficLight::Colors
 tl = Sniner::Cleware.devices(:product => Sniner::Cleware::PRODUCT_LED)
 if tl.length==1
     puts "\n== Switching lights on/off =="
-    ampel = tl.first
-    ampel.open do
-        ampel.red = true
+    dev = tl.first
+    dev.open do
+        dev.red = true
         sleep 1
-        ampel.yellow = true
+        dev.yellow = true
         sleep 1
-        ampel.red = false
-        ampel.yellow = false
-        ampel.green = true
+        dev.red = false
+        dev.yellow = false
+        dev.green = true
         sleep 2
-        ampel.leds = YELLOW
+        dev.leds = YELLOW
         sleep 1
-        ampel.leds = RED
+        dev.leds = RED
         sleep 2
-        ampel.leds = 0
+        dev.leds = 0
         puts "done"
     end
 elsif tl.length>0
