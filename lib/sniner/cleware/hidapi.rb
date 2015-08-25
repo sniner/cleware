@@ -15,9 +15,11 @@
 #   Debian Jessie: libhidapi-libusb0
 #   Arch Linux: hidapi
 #
-# Further dependencies:
+# == Dependencies
 #
 #   * FFI gem
+#   * hidapi-libusb.so
+#   * libc.so
 
 require 'ffi'
 

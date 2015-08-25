@@ -5,6 +5,7 @@ Access library for [Cleware](http://cleware.de) devices. Only the traffic light 
 ## Dependencies
 
 * HIDAPI: Be sure to install the right hidapi library. It comes in two flavors: based on libusb and one called 'raw'. Get hidapi based on libusb if you have to choose one. On Arch Linux you will find one package with both flavors included.
+* libc: Needed for converting wide-strings.
 * FFI gem
 
 ## Permissions
@@ -34,11 +35,11 @@ tl.open do
     sleep(1)
 
     # Using a bit mask
-    tl.leds = 5 # red and green
+    tl.leds = RED|GREEN
     sleep(1)
 
     # Flipping on/off states
-    tl.leds ^= 7
+    tl.leds ^= ALL
     sleep(1)
 end
 ```
