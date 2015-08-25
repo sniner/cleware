@@ -293,6 +293,21 @@ module Sniner
                     (read_state || 0) & 1
                 end
 
+                def on_change(initial_value = -1, &block)
+                    Thread.new(initial_value, block) do |val, action|
+                        open do |dev|
+                            loop do
+                                cur_val = dev.state
+                                if cur_val != val
+                                    action.call(cur_val, self)
+                                    val = cur_val
+                                end
+                                sleep(0.1)
+                            end
+                        end
+                    end
+                end
+
                 private :read_state
             end
         end
