@@ -257,7 +257,7 @@ module Sniner
                     if on
                         @state |= color
                     else
-                        @state &= (color ^ TrafficLight::ALL)
+                        @state &= (color ^ Colors::ALL)
                     end
 
                     # The old controller used by Cleware had no output endpoint
