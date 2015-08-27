@@ -43,3 +43,11 @@ tl.open do
     sleep(1)
 end
 ```
+
+## HID API vs libusb
+
+All Cleware gadgets are USB HID class devices. The USB human interface device (HID) class is an abstraction layer while libusb provides low-level access. As far as I know the HID API is the preferred way of accessing Cleware devices, but accessing via libusb does work too. A libusb version is included, but not used by default. This gem has no dependency on libusb, if you want to use the libusb version you have to install the libusb gem manually and `require 'sniner/cleware/cleware_libusb'`.
+
+## Further reading
+
+* Folkert van Heusden https://github.com/flok99/clewarecontrol

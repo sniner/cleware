@@ -23,7 +23,7 @@ module Sniner
 
     module Cleware
 
-        # Cleware device and product IDs
+        # Cleware vendor and product IDs
         VENDOR_CLEWARE  = 0x0d50
         PRODUCTS = [
             PRODUCT_LED     = 0x0008,
@@ -33,7 +33,7 @@ module Sniner
         class Error < StandardError
         end
 
-        # Globale Liste aller erkannten USB-Geräte
+        # All Cleware devices found
         @@devices = nil
 
         def self.devices(filter={})

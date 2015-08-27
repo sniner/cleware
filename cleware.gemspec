@@ -4,7 +4,7 @@ Gem::Specification.new do |s|
     s.required_ruby_version = '>= 1.9.3'
     s.name        = 'cleware'
     s.version     = Sniner::Cleware::VERSION
-    s.date        = '2015-07-16'
+    s.date        = '2015-08-27'
     s.summary     = 'Cleware library'
     s.description = 'Library for Cleware USB devices (currently traffic light only)'
     s.authors     = ['Stefan Schönberger']
@@ -13,6 +13,7 @@ Gem::Specification.new do |s|
     s.license     = 'LGPL-3.0'
     s.files       = Dir.glob('lib/**/*.rb') + Dir.glob('test/*')
     s.add_runtime_dependency 'ffi', '~> 1.9'
+    s.add_development_dependency 'libusb', '~> 0.5'
 end
 
 # vim: et sw=4 ts=4
