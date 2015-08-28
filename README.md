@@ -24,22 +24,22 @@ In order to grant users access to Cleware devices you have to give them write ac
 ```
 require 'sniner/cleware'
 
-include Sniner::Cleware::Devices::TrafficLight::Colors
+include Sniner::Cleware::TrafficLight::Colors
 
 tl = Sniner::Cleware.devices(:product => Sniner::Cleware::PRODUCT_LED).first
 
-tl.open do
+tl.open do |dev|
     # Setting colors individually
-    tl.red = true
-    tl.yellow = true
+    dev.red = true
+    dev.yellow = true
     sleep(1)
 
     # Using a bit mask
-    tl.leds = RED|GREEN
+    dev.leds = RED|GREEN
     sleep(1)
 
     # Flipping on/off states
-    tl.leds ^= ALL
+    dev.leds ^= ALL
     sleep(1)
 end
 ```

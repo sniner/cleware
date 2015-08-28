@@ -1,6 +1,6 @@
 require_relative '../lib/sniner/cleware'
 
-include Sniner::Cleware::Devices::TrafficLight::Colors
+include Sniner::Cleware::TrafficLight::Colors
 
 tl = Sniner::Cleware.devices(:product => Sniner::Cleware::PRODUCT_LED).first
 
@@ -9,20 +9,20 @@ unless tl
     exit
 end
 
-tl.open do
-    tl.red = true
+tl.open do |dev|
+    dev.red = true
     sleep 1
-    tl.yellow = true
+    dev.yellow = true
     sleep 1
-    tl.red = false
-    tl.yellow = false
-    tl.green = true
+    dev.red = false
+    dev.yellow = false
+    dev.green = true
     sleep 2
-    tl.leds = YELLOW
+    dev.leds = YELLOW
     sleep 1
-    tl.leds = RED
+    dev.leds = RED
     sleep 2
-    tl.leds = 0
+    dev.leds = 0
 end
 
 # vim: et sw=4 ts=4

@@ -7,9 +7,9 @@ io = Sniner::Cleware.devices(:product => Sniner::Cleware::PRODUCT_CONTACT).first
 begin
     puts "Digital I/O"
     state = -1
-    io.open do
+    io.open do |dev|
         loop do
-            s = io.state
+            s = dev.state
             if s!=state
                 p state = s
             end
@@ -19,13 +19,13 @@ begin
 rescue Interrupt
 end if io
 
-include Sniner::Cleware::Devices::TrafficLight::Colors
+include Sniner::Cleware::TrafficLight::Colors
 
-tl = Sniner::Cleware.devices(:product => Sniner::Cleware::PRODUCT_LED)
-if tl.length==1
+devs = Sniner::Cleware.devices(:product => Sniner::Cleware::PRODUCT_LED)
+if devs.length==1
     puts "\n== Switching lights on/off =="
-    dev = tl.first
-    dev.open do
+    tl = devs.first
+    tl.open do |dev|
         dev.red = true
         sleep 1
         dev.yellow = true
@@ -41,15 +41,15 @@ if tl.length==1
         dev.leds = 0
         puts "done"
     end
-elsif tl.length>0
+elsif devs.length>0
     puts "\n== Multiple traffic lights =="
-    tl = tl.map(&:open).compact
+    tl = devs.map(&:open).compact
     seq = [RED, RED|YELLOW, GREEN, YELLOW]
     20.times do |i|
         tl.each {|a| a.leds = seq[i % seq.length]}
         sleep(1)
     end
-    tl.map(&:close)
+    devs.map(&:close)
     puts "done"
 end
 
