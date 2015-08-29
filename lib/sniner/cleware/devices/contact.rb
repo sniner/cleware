@@ -23,9 +23,9 @@ module Sniner
             # is line 16. A set bit means output, a cleared bit means input.
             #
             # Examples:
-            #    dev.direction = 0xffff # All lines are inputs
-            #    dev.direction = 0 # All lines are output
-            #    dev.direction = 7 # Lines 1-3 are input, 4-16 output
+            #    dev.directions = 0xffff # All lines are inputs
+            #    dev.directions = 0 # All lines are output
+            #    dev.directions = 7 # Lines 1-3 are input, 4-16 output
             def directions=(mask)
                 b0 = 0x70 | ((mask & 0x8000)!=0 ? 8 : 0) | ((mask & 0x0080)!=0 ? 4 : 0)
                 b1 = (mask >> 8) & 0x7f
@@ -36,8 +36,8 @@ module Sniner
 
             # Set output lines to on or off. 'mask' must be an integer value,
             # 16 bits represent the 16 i/o lines of an IO16 device. Bit 0 is
-            # line 1, bit 15 is line 16. A set bit means on, a cleared bit
-            # means off.
+            # line 1, bit 15 is line 16. A set bit means 'on', a cleared bit
+            # means 'off'.
             def state=(mask)
                 b0 = 0x33 | ((mask & 0x8000)!=0 ? 8 : 0) | ((mask & 0x0080)!=0 ? 4 : 0)
                 b1 = (mask >> 8) & 0x7f
@@ -46,9 +46,9 @@ module Sniner
             end
 
             # Read the state of the I/O lines. Returns an integer, bit 0
-            # represents state of line 1, bit 16 represents line 16. A set
-            # bit means on (output line) or short (input line), a cleared bit
-            # means off (output line) or open (input line).
+            # represents state of line 1, bit 15 represents line 16. A set
+            # bit means 'on' (output line) or 'short' (input line), a cleared bit
+            # means 'off' (output line) or 'open' (input line).
             def state
                 mask = 0xffff # read all bits
                 begin
