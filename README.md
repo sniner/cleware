@@ -1,6 +1,9 @@
 # sniner/cleware
 
-Access library for [Cleware](http://cleware.de) devices. Only the traffic light is supported right now.
+Access library for [Cleware](http://cleware.de) devices. Supported devices:
+
+* Traffic light (0d50:0008)
+* IO16 (0d50:0030)
 
 ## Dependencies
 
