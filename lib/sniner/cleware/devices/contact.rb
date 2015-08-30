@@ -3,8 +3,8 @@
 # contact.rb - Cleware 'IO16' device
 #
 # Author::  Stefan Schönberger (mailto:mail@sniner.net)
-# Date::    29.08.2015
-# Version:: 0.2.0
+# Date::    30.08.2015
+# Version:: 0.2.1
 #
 
 require 'timeout'
@@ -17,7 +17,7 @@ module Sniner
         class Contact < DeviceConnection
             SUPPORTED_PRODUCTS  = [PRODUCT_CONTACT]
 
-            # Sets the direction of the lines of the USB-IO16 lines.
+            # Sets the direction of the USB-IO16 lines. The bitmask
             # 'mask' must be an integer value, 16 bits represent the
             # 16 i/o lines of an IO16 device. Bit 0 is line 1, bit 15
             # is line 16. A set bit means output, a cleared bit means input.
@@ -34,23 +34,34 @@ module Sniner
                 sleep(0.1)
             end
 
+            # Get the direction bitmask (see #directions=).
+            def directions
+                state.last
+            end
+
             # Set output lines to on or off. 'mask' must be an integer value,
             # 16 bits represent the 16 i/o lines of an IO16 device. Bit 0 is
             # line 1, bit 15 is line 16. A set bit means 'on', a cleared bit
             # means 'off'.
-            def state=(mask)
+            def lines=(mask)
                 b0 = 0x33 | ((mask & 0x8000)!=0 ? 8 : 0) | ((mask & 0x0080)!=0 ? 4 : 0)
                 b1 = (mask >> 8) & 0x7f
                 b2 = mask & 0x7f
                 write(Device::REPORT_ID, b0, b1, b2, 0x7f, 0x7f)
             end
 
-            # Read the state of the I/O lines. Returns an integer, bit 0
-            # represents state of line 1, bit 15 represents line 16. A set
-            # bit means 'on' (output line) or 'short' (input line), a cleared bit
-            # means 'off' (output line) or 'open' (input line).
-            def state
-                mask = 0xffff # read all bits
+            def lines(mask = 0xffff)
+                state(mask).first
+            end
+
+            # Read the state of the I/O lines. Returns an array of two integers:
+            # first integer is state of lines, second integer is the direction
+            # bitmask (see #directions=). State bitmask: bit 0 represents state
+            # of line 1, bit 15 represents line 16. A set bit means 'on' (output
+            # line) or 'short' (input line), a cleared bit means 'off' (output
+            # line) or 'open' (input line). The returned array will be empty on
+            # timeout condition.
+            def state(mask = 0xffff)
                 begin
                     Timeout.timeout(0.5) do
                         loop do
@@ -60,23 +71,22 @@ module Sniner
                                 res = read(6)
                                 if res && res.length >= 6
                                     if res[1] == seq
-                                        #mask = (res[2]<<8) + res[3]
-                                        return (res[4]<<8) + res[5]
+                                        dir = (res[2]<<8) + res[3]
+                                        return ((res[4]<<8) + res[5]) & mask, dir
                                     end
                                 end
                             end
                         end
                     end
                 rescue Timeout::Error
-                    nil
+                    []
                 end
             end
 
         private
 
-            def sync(mask=0)
+            def sync(mask = 0xffff)
                 @seq ||= 1
-                mask = 0xffff if mask == 0
                 b0 = 0x60 | ((mask & 0x8000)!=0 ? 2 : 0) | ((mask & 0x0080)!=0 ? 1 : 0)
                 b3 = (mask >> 8) & 0x7f
                 b4 = mask & 0x7f
