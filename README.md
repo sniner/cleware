@@ -1,9 +1,10 @@
 # sniner/cleware
 
-Access library for [Cleware](http://cleware.de) devices. Supported devices:
+Access library for some [Cleware](http://cleware.de) devices. It has been tested with these devices:
 
-* Traffic light (0d50:0008)
-* IO16 (0d50:0030)
+* Ampel "traffic light" (0d50:0008 v29, v106)
+* Contact (0d50:0030 v3)
+* IO16 (0d50:0030 v14)
 
 ## Dependencies
 

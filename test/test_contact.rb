@@ -26,6 +26,13 @@ def test_output(dev, out, mask=0xffff)
     puts "Written #{bits(out)}, read #{bits(inp)}, dir #{bits(dir)}: #{(out & mask)==(inp & mask) ? 'ok' : 'failed'}"
 end
 
+def test_single(dev, line, on, mask=0xffff)
+    dev[line] = on
+    inp = dev[line]
+    puts "Written #{line}=#{on}, read #{inp}, lines #{bits(dev.lines)}: #{on == inp ? 'ok' : 'failed'}"
+end
+
+
 def test_input(dev)
     inp, dir = dev.state
     puts "Read #{bits(inp)}, dir #{bits(dir)}"
@@ -36,6 +43,7 @@ begin
     puts
 
     io.open do |dev|
+        puts "This device has #{dev.count} lines."
         puts "Current direction bitmask: #{dev.directions}"
 
         # Output test
@@ -46,7 +54,9 @@ begin
 
         # Check various patterns
         test_output(dev, 0)
+        test_single(dev, 4, true)
         test_output(dev, 0xffff)
+        test_single(dev, 4, false)
         test_output(dev, 0x5a5a)
         test_output(dev, dev.lines ^ 0xffff)
 
@@ -59,7 +69,7 @@ begin
         ask "All lines will be inputs now, open and shorten lines please"
 
         dev.directions = 0xffff
-        io.on_change {|lines| puts "Read #{bits(lines)}"}
+        io.on_change {|lines| puts "Read #{bits(lines[0])}"}
 
         ask "Waiting for input"
     end
