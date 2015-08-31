@@ -9,6 +9,8 @@ unless tl
     exit
 end
 
+puts "#{tl.name} v#{tl.version} ##{tl.serial_number}"
+
 tl.open do |dev|
     dev.red = true
     sleep 1
