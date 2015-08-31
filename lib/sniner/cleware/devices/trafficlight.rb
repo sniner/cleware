@@ -93,6 +93,7 @@ module Sniner
                 @state_seq ||= 1
                 begin
                     write(Device::REPORT_ID, 5, 2, @state_seq)
+                    sleep(0.02)
                     Timeout.timeout(0.5) do
                         loop do
                             res = read(6)
