@@ -3,8 +3,8 @@
 # hidapi.rb - Ruby-FFI binding for HIDAPI library
 #
 # Autor::    Stefan Schönberger (mailto:mail@sniner.net)
-# Datum::    15.07.2015
-# Version::  1.0
+# Datum::    27.10.2015
+# Version::  1.1
 #
 # == Notes
 #
@@ -123,7 +123,7 @@ module Sniner
             end
 
             def open
-                @handle = LIBHID.hid_open(idVendor, idProduct, LIBC.str_to_wstr(serialNumber))
+                @handle = LIBHID.hid_open_path(path)
                 if block_given? && open?
                     begin
                         yield self

@@ -3,8 +3,8 @@
 # device.rb - Base classes of Cleware devices
 #
 # Autor::    Stefan Schönberger (mailto:mail@sniner.net)
-# Datum::    28.08.2015
-# Version::  0.1
+# Datum::    27.10.2015
+# Version::  0.2
 #
 
 require 'timeout'
@@ -99,6 +99,10 @@ module Sniner
             def id
                 @devinfo.id
             end
+
+            def path
+                @devinfo.path
+            end
         end
 
         class DeviceConnection
@@ -109,6 +113,10 @@ module Sniner
             def initialize(device)
                 @device = device
                 @hid = @device.devinfo
+            end
+
+            def close
+                @device.close
             end
 
             def read(len, timeout=1000)
